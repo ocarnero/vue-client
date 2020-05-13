@@ -1,12 +1,110 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      :mini-variant="mini"
+      :permanent="true"
+      app>
+      <!-- -->
+      <v-list
+          dense
+          nav
+          class="py-0"
+        >
+          <v-list-item two-line :class="'px-0'">
+            <v-list-item-avatar>
+              <img src="https://randomuser.me/api/portraits/men/81.jpg">
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>Application</v-list-item-title>
+              <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            link
+            :to="item.link"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+    <v-app-bar
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      app>
+      <!-- -->
+      <v-icon @click.stop="mini = !mini" :class="'px-2'">menu</v-icon>
+      <img class="mr-3" :src="require('./assets/logo.png')" height="30"/>
+      <v-toolbar-title>Starter-kit app</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <!-- Sizes your content based upon application components -->
+    <v-content>
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- If using vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+    <Footer/>
+    <Alert />
+  </v-app>
 </template>
+
+<script>
+import Footer from './components/core/footer'
+import Alert from './components/core/alert'
+import { mapState, mapActions } from 'vuex'
+
+export default {
+  components: {
+    Footer,
+    Alert
+  },
+  computed: {
+    ...mapState({
+      alert: state => state.alert
+    })
+  },
+  methods: {
+    ...mapActions({
+      clearAlert: 'alert/clear'
+    })
+  },
+  watch: {
+    $route (to, from) {
+      // clear alert on location change
+      this.clearAlert()
+    }
+  },
+  data () {
+    return {
+      drawer: true,
+      mini: true,
+      items: [
+        { title: 'Home', icon: 'home', link: '/' },
+        { title: 'Login', icon: 'account_box', link: '/login' },
+        { title: 'About', icon: 'mode_comment', link: '/about' },
+        { title: 'Logout', icon: 'exit_to_app', link: '/logout' }
+      ]
+    }
+  }
+}
+</script>
 
 <style lang="less">
 #app {
