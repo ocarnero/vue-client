@@ -4,7 +4,7 @@
     <v-layout align-center="align-center" justify-center="justify-center">
       <v-flex class="login-form text-xs-center">
         <div class="display-1 mb-3">
-          <v-icon class="mr-2" large="large">work</v-icon> MyWorkspace
+          <v-icon class="mr-2" large="large">account_circle</v-icon> {{options.isLoggingIn ? 'Login' : 'SignUp'}}
         </div>
         <v-card light="light">
           <v-card-text>

@@ -44,8 +44,8 @@
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       app>
       <!-- -->
-      <v-icon @click.stop="mini = !mini" :class="'px-2'">menu</v-icon>
-      <img class="mr-3" :src="require('./assets/logo.png')" height="30"/>
+      <v-icon @click.stop="mini = !mini" :class="'pr-10'">menu</v-icon>
+      <img class="mr-3" :src="require('./assets/logo.png')" height="25" :class="'pr-2'"/>
       <v-toolbar-title>Starter-kit app</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
