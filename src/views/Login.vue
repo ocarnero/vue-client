@@ -6,7 +6,7 @@
         <div class="display-1 mb-3">
           <v-icon class="mr-2" large="large">account_circle</v-icon> {{options.isLoggingIn ? 'Login' : 'SignUp'}}
         </div>
-        <v-card light="light">
+        <v-card color="green darken-5">
           <v-card-text>
             <div class="subheading">
               <template v-if="options.isLoggingIn">Log in</template>
@@ -16,7 +16,11 @@
               <v-text-field v-if="!options.isLoggingIn" v-model="user.name" prepend-icon="person" label="Name"></v-text-field>
               <v-text-field v-model="user.email" prepend-icon="email" label="Email" type="email"></v-text-field>
               <v-text-field v-model="user.password" prepend-icon="lock" label="Password" type="password"></v-text-field>
-              <v-checkbox v-if="options.isLoggingIn" v-model="options.shouldStayLoggedIn" label="Stay logged in?"></v-checkbox>
+              <v-checkbox v-model="options.shouldStayLoggedIn" label="Stay logged in?" :value="options.shouldStayLoggedIn"></v-checkbox>
+              <v-checkbox
+                v-model="checkbox"
+                :label="`Checkbox 1: ${checkbox.toString()}`"
+              ></v-checkbox>
               <v-btn v-if="options.isLoggingIn" @click.prevent="loginButtonClick" block="block" type="submit">Sign in</v-btn>
               <v-btn v-else="" block="block" type="submit">Sign up</v-btn>
             </v-form>
@@ -28,12 +32,6 @@
       </v-flex>
     </v-layout>
   </v-container>
-  <v-snackbar
-    v-model="showResult"
-    :timeout="2000"
-    top>
-    {{ result }}
-  </v-snackbar>
   </v-content>
 </template>
 
@@ -43,21 +41,24 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Login',
   computed: {
-    ...mapState('account', ['status'])
+    ...mapState({
+      logedIn: state => state.loggedIn
+    })
   },
   data () {
     return {
+      checkbox: true,
       showResult: false,
       result: null,
       error: false,
       user: {
         email: 'test@test.com',
         password: '123',
-        name: 'John Doe'
+        name: ''
       },
       options: {
         isLoggingIn: true,
-        shouldStayLoggedIn: true
+        shouldStayLoggedIn: null
       }
     }
   },

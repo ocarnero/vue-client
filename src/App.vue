@@ -99,6 +99,7 @@ export default {
         { title: 'Home', icon: 'home', link: '/' },
         { title: 'Login', icon: 'account_box', link: '/login' },
         { title: 'About', icon: 'mode_comment', link: '/about' },
+        { title: 'Users Admin', icon: 'account_box', link: '/users' },
         { title: 'Logout', icon: 'exit_to_app', link: '/logout' }
       ]
     }

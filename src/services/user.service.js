@@ -1,5 +1,6 @@
 import { USER_TOKEN } from '../constants/app'
 import { LOGIN_MUTATION } from '../graphql/mutations'
+import { USERS_QUERY } from '../graphql/queries'
 import { apolloClient } from '../graphql/apolloConfig'
 
 const login = (email, password) => {
@@ -26,7 +27,15 @@ const logout = () => {
   localStorage.removeItem(USER_TOKEN)
 }
 
+const getAll = (email, password) => {
+  return apolloClient
+    .query({
+      query: USERS_QUERY
+    })
+}
+
 export const userService = {
   login,
-  logout
+  logout,
+  getAll
 }

@@ -27,6 +27,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: () => import('../views/Users.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -37,8 +45,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.path === '/logout') {
     store.dispatch('account/logout')
-  }
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+    next()
+  } else if (to.matched.some(record => record.meta.requiresAuth)) {
     localStorage.getItem('USER_TOKEN') ? next() : next({ name: 'Login', query: { redirect: to.path } })
   } else {
     next()

@@ -15,7 +15,7 @@ const httpLinkAuth = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: token ? `Bearer ${token}` : ''
+      authorization: token ? `Bearer ${token}` : ''
     }
   }
 })
