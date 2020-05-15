@@ -3,19 +3,13 @@
       v-if="alert.message"
       v-model="snackbar"
       :color=color
-      :bottom="y === 'bottom'"
-      :left="x === 'left'"
-      :multi-line="mode === 'multi-line'"
-      :right="x === 'right'"
-      :timeout="timeout"
-      :top="y === 'top'"
-      :vertical="mode === 'vertical'"
+      @close="close"
     >
       {{alert.message}}
       <v-btn
         dark
         text
-        @click="snackbar = false"
+        @click="close"
       >
         X
       </v-btn>
@@ -30,11 +24,8 @@ export default {
   data () {
     return {
       color: 'error',
-      mode: '',
       snackbar: true,
-      timeout: 6000,
-      x: null,
-      y: 'bottom'
+      timeout: 0 // keep it open undefinitly
     }
   },
   computed: {
@@ -45,7 +36,10 @@ export default {
   methods: {
     ...mapActions({
       clearAlert: 'alert/clear'
-    })
+    }),
+    close () {
+      this.clearAlert()
+    }
   },
   watch: {
     $route (to, from) {
