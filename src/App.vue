@@ -68,28 +68,11 @@
 <script>
 import Footer from './components/core/footer'
 import Alert from './components/core/alert'
-import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
     Footer,
     Alert
-  },
-  computed: {
-    ...mapState({
-      alert: state => state.alert
-    })
-  },
-  methods: {
-    ...mapActions({
-      clearAlert: 'alert/clear'
-    })
-  },
-  watch: {
-    $route (to, from) {
-      // clear alert on location change
-      this.clearAlert()
-    }
   },
   data () {
     return {
