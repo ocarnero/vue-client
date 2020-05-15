@@ -7,7 +7,6 @@
     >
       {{alert.message}}
       <v-btn
-        dark
         text
         @click="close"
       >

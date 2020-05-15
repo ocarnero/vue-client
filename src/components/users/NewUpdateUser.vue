@@ -1,6 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="500px">
-    <v-card>
+  <v-card>
       <v-card-title>
         <span class="headline">{{ title }}</span>
       </v-card-title>
@@ -15,7 +14,7 @@
             </v-flex>
             <v-flex>
               <v-select
-                :items="Roles"
+                :items="roles"
                 label="Role"
                 solo
                 v-model="item.role"
@@ -44,54 +43,54 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="teal darken-1" @click.stop="show=false">Cancel</v-btn>
+        <v-btn color="teal darken-1" @click.stop="closeClick">Cancel</v-btn>
         <v-btn color="teal darken-1" @click.native="save">Save</v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'newUser',
+  name: 'NewUpdateUser',
   data: () => ({
+    item: {
+      fullName: '',
+      email: '',
+      role: ''
+    }
   }),
   props: {
     visible: { type: Boolean },
     isNew: { type: Boolean },
     title: { type: String },
-    item: { type: Object }
+    itemToEdit: { type: Object }
   },
   created () {
-    this.getAllRoles()
+    this.initialize()
   },
   methods: {
     ...mapActions({
-      getAllRoles: 'user/getAllRoles',
-      createUser: 'user/createUser'
+      getAllRoles: 'user/getAllRoles'
     }),
     save () {
       if (this.isNew) {
         this.createUser(this.item)
       }
+    },
+    closeClick () {
+      this.$emit('submit', 'test')
+    },
+    initialize () {
+      this.getAllRoles()
     }
   },
   computed: {
+    // ...mapState(['user/roles'])
     ...mapState({
       Roles: state => state.user.roles
-    }),
-    show: {
-      get () {
-        return this.visible
-      },
-      set (value) {
-        if (!value) {
-          this.$emit('close')
-        }
-      }
-    }
+    })
   }
 }
 </script>

@@ -30,7 +30,7 @@ const mutations = {
   }
 }
 
-export const alert = {
+export default {
   namespaced: true,
   state,
   actions,

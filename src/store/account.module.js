@@ -72,7 +72,7 @@ const mutations = {
   }
 }
 
-export const account = {
+export default {
   namespaced: true,
   state,
   actions,

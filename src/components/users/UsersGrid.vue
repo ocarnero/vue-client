@@ -11,8 +11,7 @@
           justify="end"
           class="pb-7 pr-10"
         >
-          <v-btn color="primary" dark @click.stop="dialog=true">New</v-btn>
-          <new-user-form :visible="dialog" @close="dialog=false" :item="editedItem" :title="formTitle" :isNew="isNew"/>
+          <v-btn color="primary" @click.stop="onNewClick">New</v-btn>
         </v-row>
         <v-card>
           <v-data-table
@@ -26,7 +25,7 @@
               <td>{{ props.item.role }}</td>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon color="green" @click="editItem(item)">edit</v-icon>
+              <v-icon color="green" @click="onUpdateClick(item)">edit</v-icon>
               <v-icon color="red" @click="deleteItem(item)">delete</v-icon>
             </template>
             <template slot="no-data">
@@ -41,9 +40,14 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import NewUpdateUser from './NewUpdateUser.vue'
 
 export default {
   name: 'UsersGrid',
+  // components: {
+  //   // eslint-disable-next-line vue/no-unused-components
+  //   NewUpdateUser
+  // },
   data: () => ({
     dialog: false,
     headers: [
@@ -72,11 +76,6 @@ export default {
       return this.editedIndex === -1
     }
   },
-  watch: {
-    dialog (val) {
-      val || this.close()
-    }
-  },
   created () {
     this.initialize()
   },
@@ -90,16 +89,28 @@ export default {
     refresh () {
       this.getAllUsers()
     },
-    editItem (item) {
+    onNewClick () {
+      this.$dialog.show(NewUpdateUser)
+    },
+    async onUpdateClick (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.dialog = true
-      this.refresh()
+      var updatePopUp = await this.$dialog.show(NewUpdateUser)
+      if (updatePopUp) {
+        this.refresh()
+      }
     },
-    deleteItem (item) {
+    async deleteItem (item) {
       const index = this.items.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
-      this.refresh()
+      const user = this.items[index]
+      const res = await this.$dialog.warning({
+        text: `Do you really want to delete the user ${user.fullName}?`,
+        title: 'Warning'
+      })
+      if (res === undefined) {
+      } else {
+        this.refresh()
+      }
     },
     close () {
       this.dialog = false
