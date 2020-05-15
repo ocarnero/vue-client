@@ -12,7 +12,7 @@
           class="pb-7 pr-10"
         >
           <v-btn color="primary" dark @click.stop="dialog=true">New</v-btn>
-          <new-user-form :visible="dialog" @close="dialog=false" :item="editedItem" :title="formTitle"/>
+          <new-user-form :visible="dialog" @close="dialog=false" :item="editedItem" :title="formTitle" :isNew="isNew"/>
         </v-row>
         <v-card>
           <v-data-table
@@ -67,6 +67,9 @@ export default {
     }),
     formTitle () {
       return this.editedIndex === -1 ? 'New User' : 'Edit User'
+    },
+    isNew () {
+      return this.editedIndex === -1
     }
   },
   watch: {

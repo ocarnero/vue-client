@@ -1,7 +1,8 @@
 import { userService } from '../services/user.service'
 
 const state = {
-  users: []
+  users: [],
+  roles: []
 }
 
 const actions = {
@@ -14,12 +15,37 @@ const actions = {
       .catch(error => {
         dispatch('alert/error', error, { root: true })
       })
+  },
+  getAllRoles ({ dispatch, commit }) {
+    userService
+      .getAllRoles()
+      .then((resp) =>
+        commit('getAllRolesSuccess', resp.data.roles)
+      )
+      .catch(error => {
+        dispatch('alert/error', error, { root: true })
+      })
+  },
+  createUser ({ dispatch, commit }, user) {
+    userService
+      .saveUser(user)
+      .then((resp) =>
+        commit('saveUserSuccess', resp.data.roles)
+      )
+      .catch(error => {
+        dispatch('alert/error', error, { root: true })
+      })
   }
 }
 
 const mutations = {
   getAllSuccess (state, users) {
     state.users = users
+  },
+  getAllRolesSuccess (state, roles) {
+    state.roles = roles
+  },
+  saveUserSuccess (state) {
   }
 }
 

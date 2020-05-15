@@ -14,10 +14,18 @@
               <v-text-field v-model="item.email" label="Email"></v-text-field>
             </v-flex>
             <v-flex>
-              <v-text-field v-model="item.role" label="Role"></v-text-field>
+              <v-select
+                :items="Roles"
+                label="Role"
+                solo
+                v-model="item.role"
+              ></v-select>
             </v-flex>
-            <v-flex>
-              <v-text-field v-model="item.createdAt" label="Created"></v-text-field>
+            <v-flex v-if="!isNew">
+              <v-text-field v-model="item.createdAt" label="Created" disabled></v-text-field>
+            </v-flex>
+            <v-flex v-if="isNew">
+              <v-text-field v-model="item.password" label="Password"></v-text-field>
             </v-flex>
           </v-layout>
           <!-- <v-layout>
@@ -44,16 +52,36 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'newUser',
+  data: () => ({
+  }),
   props: {
     visible: { type: Boolean },
+    isNew: { type: Boolean },
     title: { type: String },
-    item: {
-      type: Object
+    item: { type: Object }
+  },
+  created () {
+    this.getAllRoles()
+  },
+  methods: {
+    ...mapActions({
+      getAllRoles: 'user/getAllRoles',
+      createUser: 'user/createUser'
+    }),
+    save () {
+      if (this.isNew) {
+        this.createUser(this.item)
+      }
     }
   },
   computed: {
+    ...mapState({
+      Roles: state => state.user.roles
+    }),
     show: {
       get () {
         return this.visible

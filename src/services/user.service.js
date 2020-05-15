@@ -1,6 +1,6 @@
 import { USER_TOKEN } from '../constants/app'
-import { LOGIN_MUTATION } from '../graphql/mutations'
-import { USERS_QUERY } from '../graphql/queries'
+import { LOGIN_MUTATION, NEW_USER_MUTATION } from '../graphql/mutations'
+import { USERS_QUERY, ROLES_QUERY } from '../graphql/queries'
 import { apolloClient } from '../graphql/apolloConfig'
 
 const login = (email, password) => {
@@ -34,8 +34,25 @@ const getAll = (email, password) => {
     })
 }
 
+const getAllRoles = (email, password) => {
+  return apolloClient
+    .query({
+      query: ROLES_QUERY
+    })
+}
+
+const saveUser = (user) => {
+  return apolloClient
+    .mutate({
+      mutation: NEW_USER_MUTATION,
+      variables: user
+    })
+}
+
 export const userService = {
   login,
   logout,
-  getAll
+  getAll,
+  getAllRoles,
+  saveUser
 }
