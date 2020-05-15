@@ -6,6 +6,7 @@ import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
+import router from '../router'
 
 const graphLink = new HttpLink({ uri: 'http://localhost:3000/graphql' })
 
@@ -23,6 +24,9 @@ const httpLinkAuth = setContext((_, { headers }) => {
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors && graphQLErrors[0].extensions.code === 'FORBIDDEN') {
+    router.replace('/login')
+  }
   let msgs = null
 
   if (networkError) {

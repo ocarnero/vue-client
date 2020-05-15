@@ -9,14 +9,37 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `
+
+export const SIGNUP_MUTATION = gql`
+  mutation signup($fullName: String!, $email: String!, $password: String!, $rePassword: String!) {
+    signup(signupReq: {
+      fullName: $fullName,
+      email: $email,
+      password: $password,
+      rePassword: $rePassword
+    }) {
+      success,
+      message,
+      user {
+        id
+      }
+    }
+  }
+`
+
 export const NEW_USER_MUTATION = gql`
-  mutation addUser {
+  mutation addUser ($fullName: String!, $email: String!, $role: String!, $password: String!) {
     addUser (addUserReq: {
       fullName: $fullName,
       email: $email,
-      role: $role
+      role: $role,
+      password: $password
     }) {
-      id
+      success,
+      message,
+      user {
+        id
+      }
     }
   }
 `

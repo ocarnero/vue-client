@@ -25,7 +25,7 @@
               <v-text-field v-model="item.createdAt" label="Created" disabled></v-text-field>
             </v-flex>
             <v-flex v-if="isNew">
-              <v-text-field v-model="item.password" label="Password"></v-text-field>
+              <v-text-field v-model="item.password" label="Password" type="password"></v-text-field>
             </v-flex>
           </v-layout>
           <!-- <v-layout>

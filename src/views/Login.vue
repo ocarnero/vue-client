@@ -10,19 +10,16 @@
           <v-card-text>
             <div class="subheading">
               <template v-if="options.isLoggingIn">Log in</template>
-              <template v-else="">New account</template>
+              <template v-else>New account</template>
             </div>
             <v-form>
-              <v-text-field v-if="!options.isLoggingIn" v-model="user.name" prepend-icon="person" label="Name"></v-text-field>
+              <v-text-field v-if="!options.isLoggingIn" v-model="user.fullName" prepend-icon="person" label="Name"></v-text-field>
               <v-text-field v-model="user.email" prepend-icon="email" label="Email" type="email"></v-text-field>
               <v-text-field v-model="user.password" prepend-icon="lock" label="Password" type="password"></v-text-field>
+              <v-text-field v-if="!options.isLoggingIn" v-model="user.rePassword" prepend-icon="lock" label="Confirm Password" type="password"></v-text-field>
               <v-checkbox v-model="options.shouldStayLoggedIn" label="Stay logged in?" :value="options.shouldStayLoggedIn"></v-checkbox>
-              <v-checkbox
-                v-model="checkbox"
-                :label="`Checkbox 1: ${checkbox.toString()}`"
-              ></v-checkbox>
               <v-btn v-if="options.isLoggingIn" @click.prevent="loginButtonClick" block="block" type="submit">Sign in</v-btn>
-              <v-btn v-else="" block="block" type="submit">Sign up</v-btn>
+              <v-btn v-else block="block" @click.prevent="signupButtonClick" type="submit">Sign up</v-btn>
             </v-form>
           </v-card-text>
           <div v-if="options.isLoggingIn" class="padding">Don't have an account?
@@ -52,9 +49,10 @@ export default {
       result: null,
       error: false,
       user: {
+        fullName: 'Oscar',
         email: 'test@test.com',
         password: '123',
-        name: ''
+        rePassword: '123'
       },
       options: {
         isLoggingIn: true,
@@ -63,7 +61,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('account', ['login']),
+    ...mapActions('account', ['login', 'signup']),
     loginButtonClick: function () {
       const vm = this
       if (!vm.user.email || !vm.user.password) {
@@ -73,6 +71,16 @@ export default {
       }
 
       this.login({ ...vm.user })
+    },
+    signupButtonClick: function () {
+      const vm = this
+      if (!vm.user.email || !vm.user.password) {
+        vm.result = "Email and Password can't be null."
+        vm.showResult = true
+        return
+      }
+
+      this.signup({ ...vm.user })
     }
   }
 }

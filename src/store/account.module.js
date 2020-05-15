@@ -11,7 +11,6 @@ const state = user
 const actions = {
   login ({ dispatch, commit }, { email, password }) {
     commit('loginRequest', { email })
-
     userService
       .login(email, password)
       .then(() =>
@@ -23,9 +22,21 @@ const actions = {
         dispatch('alert/error', error, { root: true })
       })
   },
+  signup ({ dispatch, commit }, signupReq) {
+    commit('registerRequest', signupReq)
+    userService
+      .signup(signupReq)
+      .then(() =>
+        // router.push(router.query.redirect || '/')
+        router.replace('/login')
+      )
+      .catch(error => {
+        commit('registerFailure', error)
+        dispatch('alert/error', error, { root: true })
+      })
+  },
   logout ({ commit }) {
     commit('logout')
-
     userService
       .logout()
 
