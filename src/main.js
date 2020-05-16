@@ -11,7 +11,7 @@ import VuetifyDialog from 'vuetify-dialog'
 Vue.use(VuetifyDialog, {
   context: {
     vuetify,
-    $store: store
+    store
   }
 })
 

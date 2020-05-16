@@ -82,12 +82,13 @@ export default {
     },
     initialize () {
       this.getAllRoles()
+      this.item = this.propsData.item
     }
   },
   computed: {
     // ...mapState(['user/roles'])
     ...mapState({
-      Roles: state => state.user.roles
+      roles: state => state.user.roles
     })
   }
 }
