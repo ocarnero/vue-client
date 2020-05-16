@@ -71,9 +71,7 @@ export default {
     this.initialize()
   },
   methods: {
-    ...mapActions({
-      getAllRoles: 'user/getAllRoles'
-    }),
+    ...mapActions('user', ['getAllRoles']),
     save () {
       if (this.isNew) {
         this.createUser(this.item)

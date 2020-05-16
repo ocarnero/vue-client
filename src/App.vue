@@ -61,18 +61,31 @@
       </v-container>
     </v-content>
     <Footer/>
-    <Alert />
   </v-app>
 </template>
 
 <script>
 import Footer from './components/core/footer'
-import Alert from './components/core/alert'
 
 export default {
   components: {
-    Footer,
-    Alert
+    Footer
+  },
+  computed: {
+    errorMsg () {
+      return this.$store.state.alert.message
+    }
+  },
+  watch: {
+    errorMsg (newValue, oldValue) {
+      if (newValue) {
+        this.$dialog.message.error(newValue, {
+          position: 'bottom-right',
+          timeout: 0
+        })
+        this.$store.dispatch('alert/error', null, { root: true })
+      }
+    }
   },
   data () {
     return {
