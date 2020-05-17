@@ -14,7 +14,7 @@
         >
           <v-list-item two-line :class="'px-0'">
             <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/men/81.jpg">
+              <img src="https://avatars0.githubusercontent.com/u/24800098?s=60&amp;v=4">
             </v-list-item-avatar>
 
             <v-list-item-content>
