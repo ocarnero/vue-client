@@ -44,10 +44,6 @@ import NewUpdateUser from './NewUpdateUser.vue'
 
 export default {
   name: 'UsersGrid',
-  // components: {
-  //   // eslint-disable-next-line vue/no-unused-components
-  //   NewUpdateUser
-  // },
   data: () => ({
     dialog: false,
     headers: [
@@ -68,13 +64,7 @@ export default {
   computed: {
     ...mapState({
       items: state => state.user.users
-    }),
-    formTitle () {
-      return this.editedIndex === -1 ? 'New User' : 'Edit User'
-    },
-    isNew () {
-      return this.editedIndex === -1
-    }
+    })
   },
   created () {
     this.initialize()
@@ -90,12 +80,12 @@ export default {
       this.getAllUsers()
     },
     onNewClick () {
-      this.$dialog.show(NewUpdateUser)
+      this.$dialog.show(NewUpdateUser, { isNew: true })
     },
     async onUpdateClick (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      var updatePopUp = await this.$dialog.show(NewUpdateUser)
+      var updatePopUp = await this.$dialog.show(NewUpdateUser, { itemToEdit: this.editedItem, isNew: false })
       if (updatePopUp) {
         this.refresh()
       }
@@ -111,22 +101,7 @@ export default {
       } else {
         this.refresh()
       }
-    },
-    close () {
-      this.dialog = false
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
-    }//,
-    // save () {
-    //   if (this.editedIndex > -1) {
-    //     Object.assign(this.items[this.editedIndex], this.editedItem)
-    //   } else {
-    //     this.items.push(this.editedItem)
-    //   }
-    //   this.close()
-    // }
+    }
   }
 }
 </script>

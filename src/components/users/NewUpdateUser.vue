@@ -1,7 +1,7 @@
 <template>
   <v-card>
       <v-card-title>
-        <span class="headline">{{ title }}</span>
+        <span class="headline">{{ formTitle }}</span>
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>
@@ -64,11 +64,13 @@ export default {
   props: {
     visible: { type: Boolean },
     isNew: { type: Boolean },
-    title: { type: String },
     itemToEdit: { type: Object }
   },
   created () {
     this.initialize()
+    if (!this.isNew) {
+      this.item = this.itemToEdit
+    }
   },
   methods: {
     ...mapActions('user', ['getAllRoles']),
@@ -82,14 +84,15 @@ export default {
     },
     initialize () {
       this.getAllRoles()
-      this.item = this.propsData.item
     }
   },
   computed: {
-    // ...mapState(['user/roles'])
     ...mapState({
       roles: state => state.user.roles
-    })
+    }),
+    formTitle () {
+      return this.isNew ? 'New User' : 'Edit User'
+    }
   }
 }
 </script>
