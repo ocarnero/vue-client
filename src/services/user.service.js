@@ -73,11 +73,6 @@ const editUser = (user) => {
       mutation: EDIT_USER_MUTATION,
       variables: user
     })
-    .then(response => {
-      if (!response.data.addUser.success) {
-        throw (response.data.addUser.message)
-      }
-    })
 }
 
 export const userService = {

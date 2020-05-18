@@ -83,7 +83,7 @@ export default {
           position: 'bottom-right',
           timeout: 0
         })
-        // this.$store.dispatch('alert/error', '', { root: true })
+        this.$store.dispatch('alert/error', null, { root: true })
       }
     }
   },

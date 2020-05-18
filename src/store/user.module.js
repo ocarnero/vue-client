@@ -7,7 +7,7 @@ const state = {
 
 const actions = {
   getAll ({ dispatch, commit }) {
-    userService
+    return userService
       .getAll()
       .then((resp) =>
         commit('getAllSuccess', resp.data.users)
@@ -17,7 +17,7 @@ const actions = {
       })
   },
   getAllRoles ({ dispatch, commit }) {
-    userService
+    return userService
       .getAllRoles()
       .then((resp) =>
         commit('getAllRolesSuccess', resp.data.roles)
@@ -27,7 +27,7 @@ const actions = {
       })
   },
   createUser ({ dispatch, commit }, user) {
-    userService
+    return userService
       .saveUser(user)
       .then((resp) =>
         commit('saveUserSuccess', resp.data.roles)
@@ -37,13 +37,14 @@ const actions = {
       })
   },
   editUser ({ dispatch, commit }, user) {
-    userService
+    return userService
       .editUser(user)
-      .then((resp) =>
+      .then((resp) => {
         commit('editUserSuccess', resp.data.user)
-      )
+      })
       .catch(error => {
         dispatch('alert/error', error.message, { root: true })
+        throw error
       })
   }
 }

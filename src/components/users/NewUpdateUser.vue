@@ -1,5 +1,5 @@
 <template>
-  <DialogCard title="Login" :actions="actions">
+  <DialogCard title="Login" :actions="actions" persistent>
     <v-card>
       <v-card-title>
         <span class="headline">{{ formTitle }}</span>
@@ -88,35 +88,27 @@ export default {
       return this.isNew ? 'New User' : 'Edit User'
     },
     actions () {
-      return {
-        cancel: {
+      return [
+        {
           text: 'Cancel',
           color: 'teal darken-1',
           handle: () => {
-            this.$emit('submit', 'close')
+            this.$emit('submit', false)
           }
         },
-        save: {
-          flat: true,
+        {
           text: 'Save',
           color: 'teal darken-1',
           handle: () => {
-            return new Promise((resolve, reject) => {
-              let action
-              if (this.isNew) {
-                action = this.createUser(this.item)
-              } else {
-                action = this.editUser(this.item)
-              }
-              action
-                .then((resp) => {
-                  // reject(Error('It broke'))
-                  this.$emit('submit', 'success')
-                })
-            })
+            let action
+            if (this.isNew) {
+              action = this.createUser(this.item)
+            } else {
+              action = this.editUser(this.item)
+            }
+            return action
           }
-        }
-      }
+        }]
     }
   }
 }
