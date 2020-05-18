@@ -85,10 +85,8 @@ export default {
     async onUpdateClick (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      var updatePopUp = await this.$dialog.show(NewUpdateUser, { itemToEdit: this.editedItem, isNew: false })
-      if (updatePopUp) {
-        this.refresh()
-      }
+      this.$dialog.show(NewUpdateUser, { itemToEdit: this.editedItem, isNew: false })
+        .then(() => this.refresh())
     },
     async deleteItem (item) {
       const index = this.items.indexOf(item)

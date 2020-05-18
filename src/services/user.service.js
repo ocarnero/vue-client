@@ -1,5 +1,5 @@
 import { USER_TOKEN } from '../constants/app'
-import { LOGIN_MUTATION, NEW_USER_MUTATION, SIGNUP_MUTATION } from '../graphql/mutations'
+import { LOGIN_MUTATION, NEW_USER_MUTATION, SIGNUP_MUTATION, EDIT_USER_MUTATION } from '../graphql/mutations'
 import { USERS_QUERY, ROLES_QUERY } from '../graphql/queries'
 import { apolloClient } from '../graphql/apolloConfig'
 
@@ -67,11 +67,25 @@ const saveUser = (user) => {
     })
 }
 
+const editUser = (user) => {
+  return apolloClient
+    .mutate({
+      mutation: EDIT_USER_MUTATION,
+      variables: user
+    })
+    .then(response => {
+      if (!response.data.addUser.success) {
+        throw (response.data.addUser.message)
+      }
+    })
+}
+
 export const userService = {
   login,
   signup,
   logout,
   getAll,
   getAllRoles,
-  saveUser
+  saveUser,
+  editUser
 }

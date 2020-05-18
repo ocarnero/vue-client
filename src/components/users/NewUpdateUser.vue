@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <DialogCard title="Login" :actions="actions">
+    <v-card>
       <v-card-title>
         <span class="headline">{{ formTitle }}</span>
       </v-card-title>
@@ -41,12 +42,13 @@
           </v-layout> -->
         </v-container>
       </v-card-text>
-      <v-card-actions>
+      <!-- <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="teal darken-1" @click.stop="closeClick">Cancel</v-btn>
-        <v-btn color="teal darken-1" @click.native="save">Save</v-btn>
-      </v-card-actions>
+        <v-btn color="teal darken-1" @click.stop="save">Save</v-btn>
+      </v-card-actions> -->
     </v-card>
+  </DialogCard>
 </template>
 
 <script>
@@ -73,15 +75,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['getAllRoles']),
-    save () {
-      if (this.isNew) {
-        this.createUser(this.item)
-      }
-    },
-    closeClick () {
-      this.$emit('submit', 'test')
-    },
+    ...mapActions('user', ['getAllRoles', 'createUser', 'editUser']),
     initialize () {
       this.getAllRoles()
     }
@@ -92,6 +86,37 @@ export default {
     }),
     formTitle () {
       return this.isNew ? 'New User' : 'Edit User'
+    },
+    actions () {
+      return {
+        cancel: {
+          text: 'Cancel',
+          color: 'teal darken-1',
+          handle: () => {
+            this.$emit('submit', 'close')
+          }
+        },
+        save: {
+          flat: true,
+          text: 'Save',
+          color: 'teal darken-1',
+          handle: () => {
+            return new Promise((resolve, reject) => {
+              let action
+              if (this.isNew) {
+                action = this.createUser(this.item)
+              } else {
+                action = this.editUser(this.item)
+              }
+              action
+                .then((resp) => {
+                  // reject(Error('It broke'))
+                  this.$emit('submit', 'success')
+                })
+            })
+          }
+        }
+      }
     }
   }
 }

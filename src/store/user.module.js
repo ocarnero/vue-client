@@ -35,6 +35,16 @@ const actions = {
       .catch(error => {
         dispatch('alert/error', error, { root: true })
       })
+  },
+  editUser ({ dispatch, commit }, user) {
+    userService
+      .editUser(user)
+      .then((resp) =>
+        commit('editUserSuccess', resp.data.user)
+      )
+      .catch(error => {
+        dispatch('alert/error', error.message, { root: true })
+      })
   }
 }
 
@@ -46,6 +56,8 @@ const mutations = {
     state.roles = roles
   },
   saveUserSuccess (state) {
+  },
+  editUserSuccess (state) {
   }
 }
 

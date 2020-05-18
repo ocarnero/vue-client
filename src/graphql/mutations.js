@@ -21,7 +21,7 @@ export const SIGNUP_MUTATION = gql`
       success,
       message,
       user {
-        id
+        _id
       }
     }
   }
@@ -38,8 +38,23 @@ export const NEW_USER_MUTATION = gql`
       success,
       message,
       user {
-        id
+        _id
       }
+    }
+  }
+`
+
+export const EDIT_USER_MUTATION = gql`
+  mutation editUser ($_id: ID!, $fullName: String!, $email: String!, $role: String!) {
+    editUser (
+      _id: $_id,
+      editUserReq: {
+        fullName: $fullName,
+        email: $email,
+        role: $role
+      }
+    ) {
+      _id
     }
   }
 `
