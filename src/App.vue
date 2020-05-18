@@ -79,9 +79,9 @@ export default {
   watch: {
     errorMsg (newValue, oldValue) {
       if (newValue) {
-        this.$dialog.message.error(newValue, {
+        this.$dialog.notify.error(newValue, {
           position: 'bottom-right',
-          timeout: 0
+          timeout: 5000
         })
         this.$store.dispatch('alert/error', null, { root: true })
       }
