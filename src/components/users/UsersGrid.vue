@@ -32,6 +32,7 @@
               <v-btn color="primary" @click="initialize">Reset</v-btn>
             </template>
           </v-data-table>
+          <v-btn color="primary" @click="initialize">Reset</v-btn>
         </v-card>
       </v-flex>
     </v-layout>
@@ -71,7 +72,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getAllUsers: 'user/getAll'
+      getAllUsers: 'user/getAll',
+      deleteUser: 'user/deleteUser'
     }),
     initialize () {
       this.getAllUsers()
@@ -81,25 +83,32 @@ export default {
     },
     onNewClick () {
       this.$dialog.show(NewUpdateUser, { isNew: true })
+        .then((resp) => {
+          if (resp) {
+            this.refresh()
+          }
+        })
     },
     async onUpdateClick (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      var result = await this.$dialog.show(NewUpdateUser, { itemToEdit: this.editedItem, isNew: false, waitForResult: true })
-      if (result) {
-        this.refresh()
-      }
+      this.$dialog.show(NewUpdateUser, { itemToEdit: this.editedItem, isNew: false, waitForResult: true })
+        .then((resp) => {
+          if (resp) {
+            this.refresh()
+          }
+        })
     },
     async deleteItem (item) {
-      const index = this.items.indexOf(item)
-      const user = this.items[index]
       const res = await this.$dialog.warning({
-        text: `Do you really want to delete the user ${user.fullName}?`,
+        text: `Do you really want to delete the user ${item.fullName}?`,
         title: 'Warning'
       })
-      if (res === undefined) {
-      } else {
-        this.refresh()
+      if (res) {
+        this.deleteUser(item)
+          .then(() => {
+            this.refresh()
+          })
       }
     }
   }

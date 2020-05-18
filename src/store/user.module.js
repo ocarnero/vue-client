@@ -1,17 +1,22 @@
 import { userService } from '../services/user.service'
+import { errorHandlerAndFormater } from '../utils/errorHandling'
 
 const state = {
   users: [],
   roles: []
 }
 
+const getters = {
+
+}
+
 const actions = {
   getAll ({ dispatch, commit }) {
     return userService
       .getAll()
-      .then((resp) =>
+      .then((resp) => {
         commit('getAllSuccess', resp.data.users)
-      )
+      })
       .catch(error => {
         dispatch('alert/error', error, { root: true })
       })
@@ -19,32 +24,47 @@ const actions = {
   getAllRoles ({ dispatch, commit }) {
     return userService
       .getAllRoles()
-      .then((resp) =>
+      .then((resp) => {
         commit('getAllRolesSuccess', resp.data.roles)
-      )
+      })
       .catch(error => {
         dispatch('alert/error', error, { root: true })
       })
   },
   createUser ({ dispatch, commit }, user) {
     return userService
-      .saveUser(user)
-      .then((resp) =>
-        commit('saveUserSuccess', resp.data.roles)
-      )
+      .createUser(user)
+      .then((resp) => {
+        commit('saveUserSuccess', resp.data.saveUser)
+      })
       .catch(error => {
-        dispatch('alert/error', error, { root: true })
+        const formatedError = errorHandlerAndFormater(error)
+        dispatch('alert/error', formatedError, { root: true })
+        throw formatedError
       })
   },
   editUser ({ dispatch, commit }, user) {
     return userService
       .editUser(user)
       .then((resp) => {
-        commit('editUserSuccess', resp.data.user)
+        commit('editUserSuccess', resp.data.editUser)
       })
       .catch(error => {
-        dispatch('alert/error', error.message, { root: true })
-        throw error
+        const formatedError = errorHandlerAndFormater(error)
+        dispatch('alert/error', formatedError, { root: true })
+        throw formatedError
+      })
+  },
+  deleteUser ({ dispatch, commit }, user) {
+    return userService
+      .deleteUser(user)
+      .then((resp) => {
+        commit('deleteSuccess', resp.data.deleteUser)
+      })
+      .catch(error => {
+        const formatedError = errorHandlerAndFormater(error)
+        dispatch('alert/error', formatedError, { root: true })
+        throw formatedError
       })
   }
 }
@@ -59,12 +79,15 @@ const mutations = {
   saveUserSuccess (state) {
   },
   editUserSuccess (state) {
+  },
+  deleteSuccess (state) {
   }
 }
 
 export default {
   namespaced: true,
   state,
+  getters,
   actions,
   mutations
 }
