@@ -72,18 +72,28 @@ export default {
     Footer
   },
   computed: {
-    errorMsg () {
+    message () {
       return this.$store.state.alert.message
+    },
+    messageType () {
+      return this.$store.state.alert.type
     }
   },
   watch: {
-    errorMsg (newValue, oldValue) {
+    message (newValue, oldValue) {
       if (newValue) {
-        this.$dialog.notify.error(newValue, {
-          position: 'bottom-right',
-          timeout: 5000
-        })
-        this.$store.dispatch('alert/error', null, { root: true })
+        if (this.messageType === 'error') {
+          this.$dialog.notify.error(newValue, {
+            position: 'bottom-right',
+            timeout: 5000
+          })
+        } else if (this.messageType === 'success') {
+          this.$dialog.notify.info(newValue, {
+            position: 'bottom-right',
+            timeout: 5000
+          })
+        }
+        this.$store.dispatch('alert/clear')
       }
     }
   },

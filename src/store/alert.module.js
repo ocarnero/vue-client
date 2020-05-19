@@ -10,6 +10,9 @@ const actions = {
   error ({ commit }, message) {
     commit('error', message)
   },
+  info ({ commit }, message) {
+    commit('info', message)
+  },
   clear ({ commit }) {
     commit('clear')
   }
@@ -17,11 +20,15 @@ const actions = {
 
 const mutations = {
   success (state, message) {
-    state.type = 'alert-success'
+    state.type = 'success'
     state.message = message
   },
   error (state, message) {
-    state.type = 'alert-danger'
+    state.type = 'error'
+    state.message = message
+  },
+  info (state, message) {
+    state.type = 'info'
     state.message = message
   },
   clear (state) {

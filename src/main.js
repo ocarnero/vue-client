@@ -8,6 +8,7 @@ import vuetify from './plugins/vuetify'
 import apolloProvider from './graphql/apolloConfig'
 import VueApollo from 'vue-apollo'
 import VuetifyDialog from 'vuetify-dialog'
+import moment from 'vue-moment'
 
 Vue.use(VuetifyDialog, {
   context: {
@@ -15,7 +16,7 @@ Vue.use(VuetifyDialog, {
     store
   }
 })
-
+Vue.use(moment)
 Vue.use(VueApollo)
 
 Vue.config.productionTip = false

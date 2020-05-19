@@ -15,7 +15,7 @@ export const errorHandlerAndFormater = (error) => {
     count++
   })
 
-  error.networkError && error.networkError.result.errors.forEach(({ message, locations, path }) => {
+  error.networkError && error.networkError && error.networkError.result && error.networkError.result.errors.forEach(({ message, locations, path }) => {
     formatedMessage += `Message ${count}: ${message}; `
     count++
   })

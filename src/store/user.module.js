@@ -18,7 +18,8 @@ const actions = {
         commit('getAllSuccess', resp.data.users)
       })
       .catch(error => {
-        dispatch('alert/error', error, { root: true })
+        const formatedError = errorHandlerAndFormater(error)
+        dispatch('alert/error', formatedError, { root: true })
       })
   },
   getAllRoles ({ dispatch, commit }) {
@@ -28,14 +29,21 @@ const actions = {
         commit('getAllRolesSuccess', resp.data.roles)
       })
       .catch(error => {
-        dispatch('alert/error', error, { root: true })
+        const formatedError = errorHandlerAndFormater(error)
+        dispatch('alert/error', formatedError, { root: true })
       })
   },
   createUser ({ dispatch, commit }, user) {
     return userService
       .createUser(user)
       .then((resp) => {
-        commit('saveUserSuccess', resp.data.saveUser)
+        if (resp.data.addUser.success) {
+          commit('saveUserSuccess', resp.data.addUser.user)
+          return resp.data.addUser.user
+        } else {
+          const formatedError = errorHandlerAndFormater(resp.data.addUser.message)
+          dispatch('alert/error', formatedError, { root: true })
+        }
       })
       .catch(error => {
         const formatedError = errorHandlerAndFormater(error)
@@ -47,7 +55,10 @@ const actions = {
     return userService
       .editUser(user)
       .then((resp) => {
-        commit('editUserSuccess', resp.data.editUser)
+        if (resp.data.editUser) {
+          commit('editUserSuccess', resp.data.editUser)
+          return resp.data.editUser
+        }
       })
       .catch(error => {
         const formatedError = errorHandlerAndFormater(error)
