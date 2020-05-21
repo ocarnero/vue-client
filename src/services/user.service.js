@@ -59,7 +59,8 @@ const editUser = (user) => {
   return apolloClient
     .mutate({
       mutation: EDIT_USER_MUTATION,
-      variables: user
+      variables: user,
+      refetchQueries: ['users']
     })
 }
 

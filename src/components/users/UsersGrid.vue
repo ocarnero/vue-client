@@ -89,10 +89,12 @@ export default {
       this.getAllUsers()
     },
     refresh () {
-      this.getAllUsers()
+      setTimeout(() => {
+        this.getAllUsers()
+      }, 1000)
     },
     onNewClick () {
-      this.$dialog.show(NewUpdateUser, { isNew: true, $refs: this.$refs })
+      this.$dialog.show(NewUpdateUser, { isNew: true, waitForResult: true })
         .then((resp) => {
           if (resp) {
             this.$store.dispatch('alert/success', 'User created success.')

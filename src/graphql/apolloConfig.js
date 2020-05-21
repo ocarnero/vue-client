@@ -51,7 +51,19 @@ const link = ApolloLink.from([httpLinkAuth, errorLink, graphLink])
 // Create the apollo client
 export const apolloClient = new ApolloClient({
   link: link,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  // Provide some optional constructor fields
+  name: 'vuejs-web-client',
+  version: '1.0',
+  queryDeduplication: false,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache' // fetchPolicy "cache-first" | "network-only" | "cache-only" | "no-cache" | "standby" | "cache-and-network"
+    },
+    query: {
+      fetchPolicy: 'no-cache'
+    }
+  }
 })
 
 // Install the vue plugin

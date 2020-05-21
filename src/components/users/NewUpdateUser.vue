@@ -94,7 +94,7 @@ export default {
         await action
           .then(resp => {
             if (resp) {
-              this.$emit('submit', false)
+              this.$emit('submit', true)
             }
           })
       }
