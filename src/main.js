@@ -1,5 +1,6 @@
 import './registerServiceWorker'
 import 'vuetify-dialog/dist/vuetify-dialog.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
