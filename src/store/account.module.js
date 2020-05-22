@@ -1,6 +1,6 @@
 import { USER_TOKEN } from '../constants/app'
 import { userService } from '../services/user.service'
-import router from '../router/index'
+import router from '../router'
 
 // const user = JSON.parse(localStorage.getItem(USER_TOKEN))
 const user = localStorage.getItem(USER_TOKEN)
@@ -13,10 +13,11 @@ const actions = {
     commit('loginRequest', { email })
     userService
       .login(email, password)
-      .then(() =>
-        // router.push(router.query.redirect || '/')
-        router.replace('/')
-      )
+      .then(() => {
+        const path = localStorage.getItem('pathToLoadAfterLogin') || '/'
+        localStorage.removeItem('pathToLoadAfterLogin')
+        router.push(path)
+      })
       .catch(error => {
         commit('loginFailure', error)
         dispatch('alert/error', error, { root: true })

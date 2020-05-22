@@ -39,6 +39,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
@@ -47,7 +48,12 @@ router.beforeEach((to, from, next) => {
     store.dispatch('account/logout')
     next()
   } else if (to.matched.some(record => record.meta.requiresAuth)) {
-    localStorage.getItem('USER_TOKEN') ? next() : next({ name: 'Login', query: { redirect: to.path } })
+    if (localStorage.getItem('USER_TOKEN')) {
+      next()
+    } else {
+      localStorage.setItem('pathToLoadAfterLogin', to.path)
+      next()
+    }
   } else {
     next()
   }
